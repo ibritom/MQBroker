@@ -9,8 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\mysocketdll\Listas\Listas.csproj" />
-    <ProjectReference Include="..\..\pilasycolas\pilasycolas\pilasycolas.csproj" />
     <ProjectReference Include="..\MQBrokerClient\MQBrokerClient.csproj" />
     <ProjectReference Include="..\MQBroker\MQBroker.csproj" />
   </ItemGroup>
