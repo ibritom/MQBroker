@@ -4,6 +4,14 @@ VisualStudioVersion = 17.13.35913.81
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQBroker", "MQBroker\MQBroker.csproj", "{A3FF09FB-88CD-47BA-94CC-B863ED3A8C95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Listas", "..\mysocketdll\Listas\Listas.csproj", "{DF3DF988-517E-E8C2-9ECC-E8BCDA4D792C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pilasycolas", "..\pilasycolas\pilasycolas\pilasycolas.csproj", "{4B3EFF2E-A232-A4A0-95E1-38BCF520769E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MQBrokerClient", "MQBrokerClient\MQBrokerClient.csproj", "{ACF97F1E-63B4-4847-AC27-D51A7CF9FBE8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "App", "App\App.csproj", "{D51B509C-6F0F-4F5D-9137-3BD33B356B02}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,6 +22,22 @@ Global
 		{A3FF09FB-88CD-47BA-94CC-B863ED3A8C95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A3FF09FB-88CD-47BA-94CC-B863ED3A8C95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A3FF09FB-88CD-47BA-94CC-B863ED3A8C95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF3DF988-517E-E8C2-9ECC-E8BCDA4D792C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF3DF988-517E-E8C2-9ECC-E8BCDA4D792C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF3DF988-517E-E8C2-9ECC-E8BCDA4D792C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF3DF988-517E-E8C2-9ECC-E8BCDA4D792C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B3EFF2E-A232-A4A0-95E1-38BCF520769E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B3EFF2E-A232-A4A0-95E1-38BCF520769E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B3EFF2E-A232-A4A0-95E1-38BCF520769E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B3EFF2E-A232-A4A0-95E1-38BCF520769E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACF97F1E-63B4-4847-AC27-D51A7CF9FBE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACF97F1E-63B4-4847-AC27-D51A7CF9FBE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACF97F1E-63B4-4847-AC27-D51A7CF9FBE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACF97F1E-63B4-4847-AC27-D51A7CF9FBE8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D51B509C-6F0F-4F5D-9137-3BD33B356B02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D51B509C-6F0F-4F5D-9137-3BD33B356B02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D51B509C-6F0F-4F5D-9137-3BD33B356B02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D51B509C-6F0F-4F5D-9137-3BD33B356B02}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
