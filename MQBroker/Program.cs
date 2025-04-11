@@ -1,4 +1,4 @@
-﻿namespace MQBroker
+﻿namespace Broker
 {
     internal class Program
     {

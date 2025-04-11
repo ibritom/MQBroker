@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Listas;
 
-namespace MQBroker
+namespace Broker
 {
     public class MQBroker
     {
@@ -30,7 +30,7 @@ namespace MQBroker
             }
         }
 
-        private void ManejarCliente(TcpClient client)
+        public void ManejarCliente(TcpClient client)
         {
             try
             {

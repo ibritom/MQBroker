@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Listas;  // Asegúrate de tener la definición correcta de Lista<T>
 using pilasycolas;  // Asegúrate de tener la definición correcta de Cola<T>
 
-namespace MQBroker
+namespace Broker
 {
     internal class Tema
     {

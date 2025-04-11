@@ -103,6 +103,7 @@
             button2.TabIndex = 5;
             button2.Text = "Desuscribirse";
             button2.UseVisualStyleBackColor = true;
+            button2.Click += button2_Click;
             // 
             // button3
             // 
@@ -113,6 +114,7 @@
             button3.TabIndex = 6;
             button3.Text = "Publicar";
             button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
             // 
             // button4
             // 
@@ -123,6 +125,7 @@
             button4.TabIndex = 7;
             button4.Text = "Obtener Mensaje";
             button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // textBox1
             // 
@@ -140,6 +143,7 @@
             textBox2.Name = "textBox2";
             textBox2.Size = new Size(154, 23);
             textBox2.TabIndex = 9;
+            textBox2.TextChanged += textBox2_TextChanged;
             // 
             // textBox3
             // 
@@ -148,6 +152,7 @@
             textBox3.Name = "textBox3";
             textBox3.Size = new Size(154, 23);
             textBox3.TabIndex = 10;
+            textBox3.TextChanged += textBox3_TextChanged;
             // 
             // textBox4
             // 
@@ -156,6 +161,7 @@
             textBox4.Name = "textBox4";
             textBox4.Size = new Size(154, 23);
             textBox4.TabIndex = 11;
+            textBox4.TextChanged += textBox4_TextChanged;
             // 
             // tableLayoutPanel1
             // 
@@ -171,6 +177,7 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 76.79558F));
             tableLayoutPanel1.Size = new Size(208, 136);
             tableLayoutPanel1.TabIndex = 13;
+            tableLayoutPanel1.Paint += tableLayoutPanel1_Paint;
             // 
             // richTextBox1
             // 
@@ -180,6 +187,7 @@
             richTextBox1.Size = new Size(166, 137);
             richTextBox1.TabIndex = 14;
             richTextBox1.Text = "";
+            richTextBox1.TextChanged += richTextBox1_TextChanged;
             // 
             // label5
             // 

@@ -1,4 +1,4 @@
-﻿namespace MQBrokerClient
+﻿namespace MQProject
 {
     internal class Program
     {
