@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace pilasycolas
 {
-    public interface Cola
+    public interface Cola<Tipo>
     {
-        void AnadirACola(int elemento);
-        int QuitarDeCola();
-        int Delante();
-
+        void AnadirACola(Tipo elemento);
+        Tipo QuitarDeCola();
+        Tipo Frente();
+        int Tamano();
     }
 }

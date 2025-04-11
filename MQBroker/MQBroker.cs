@@ -1,61 +1,139 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
+using System.Threading.Tasks;
 using Listas;
-
 
 namespace MQBroker
 {
     public class MQBroker
     {
-        private TcpListener servidor;
-        private ListaDobleEnlazada<ParejaDeNodos<string, Tema>> Temas;
+        private TcpListener server;
+        private Diccionario<string, Tema> temas;
 
-        public MQBroker(string ip, int puerto)
+        public MQBroker(string ip, int port)
         {
-            this.servidor = new TcpListener(IPAddress.Parse(ip), puerto);
-            this.temas = new ListaDobleEnlazada<Tema>();
+            server = new TcpListener(IPAddress.Parse(ip), port);
+            temas = new Diccionario<string, Tema>();
         }
+
         public void Iniciar()
         {
-            this.servidor.Start();
-            Console.WriteLine("Servidor MQBroker iniciado y escuchando peticiones...");
+            server.Start();
+            Console.WriteLine("MQBroker iniciado y escuchando peticiones...");
+
             while (true)
             {
-                TcpClient cliente = this.servidor.AcceptTcpClient();
-                Console.WriteLine("Cliente conectado.");
-                Task.Run(() => ManejarCliente(cliente));
+                TcpClient client = server.AcceptTcpClient();
+                Task.Run(() => ManejarCliente(client));
             }
         }
-        private void ManejarCliente(TcpClient cliente)
+
+        private void ManejarCliente(TcpClient client)
         {
             try
             {
-                using (NetworkStream stream = cliente.GetStream())
+                using (NetworkStream stream = client.GetStream())
                 {
                     byte[] buffer = new byte[1024];
-                    int bytesLeidos = stream.Read(buffer, 0, buffer.Length);
-                    string mensaje = Encoding.UTF8.GetString(buffer, 0, bytesLeidos);
-                    Console.WriteLine($"Mensaje recibido: {mensaje}");
+                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                    string request = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    string[] parts = request.Split('|');
 
-                    string[] partes = mensaje.Split('|');
-                    string comando = partes[0].ToUpper();
+                    string command = parts[0].ToUpper();
 
-                    if (comando == "SUSCRIBE")
+                    if (command == "SUBSCRIBE")
                     {
-                        string appId = partes[1];
-                        string nombreTema = partes[2];
+                        string appId = parts[1];
+                        string topicName = parts[2];
 
-                        if (!temas.Contiene(new Tema(nombreTema)))
+
+                        if (!temas.Contiene(topicName))
                         {
-                            temas.Anadir(new Tema(nombreTema));
+                            temas.Anadir(topicName, new Tema(topicName));
+                        }
+
+                        Tema topic = temas.Obtener(topicName);
+                        topic.AnadirSub(appId);
+
+                        Console.WriteLine($"{appId} se suscribió al topic {topicName}");
+
+                        byte[] response = Encoding.UTF8.GetBytes("SUBSCRIBED");
+                        stream.Write(response, 0, response.Length);
+                    }
+                    else if (command == "UNSUBSCRIBE")
+                    {
+                        string appId = parts[1];
+                        string topicName = parts[2];
+
+                        if (temas.Contiene(topicName))
+                        {
+                            temas.Obtener(topicName).QuitarSub(appId);
+                            Console.WriteLine($"{appId} se desuscribió del topic {topicName}");
+                        }
+                        byte[] response = Encoding.UTF8.GetBytes("UNSUBSCRIBED");
+                        stream.Write(response, 0, response.Length);
+                    }
+                    else if (command == "PUBLISH")
+                    {
+                        string appId = parts[1];
+                        string topicName = parts[2];
+                        string content = parts[3];
+
+                        if (temas.Contiene(topicName))
+                        {
+                            Mensaje msg = new Mensaje(topicName, content);
+                            temas.Obtener(topicName).ColarMensaje(msg);
+
+                            foreach (var subscriber in temas.Obtener(topicName).GetSub() as IEnumerable<string>)
+                            {
+                                Console.WriteLine($"Mensaje para {subscriber} en {topicName}: {content}");
+                            }
+                            byte[] response = Encoding.UTF8.GetBytes("PUBLISHED");
+                            stream.Write(response, 0, response.Length);
+                        }
+                        else
+                        {
+                            Console.WriteLine($"El topic {topicName} no existe. Publicación ignorada.");
+                            byte[] response = Encoding.UTF8.GetBytes("TOPIC_NOT_FOUND");
+                            stream.Write(response, 0, response.Length);
+                        }
+                    }
+                    else if (command == "RECEIVE")
+                    {
+                        string appId = parts[1];
+                        string topicName = parts[2];
+
+                        if (temas.Contiene(topicName))
+                        {
+                            Mensaje message = temas.Obtener(topicName).DecolarMensaje();
+                            if (message != null)
+                            {
+                                byte[] response = Encoding.UTF8.GetBytes(message.contenido);
+                                stream.Write(response, 0, response.Length);
+                            }
+                            else
+                            {
+                                byte[] response = Encoding.UTF8.GetBytes("NO_MESSAGES");
+                                stream.Write(response, 0, response.Length);
+                            }
+                        }
+                        else
+                        {
+                            byte[] response = Encoding.UTF8.GetBytes("TOPIC_NOT_FOUND");
+                            stream.Write(response, 0, response.Length);
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error procesando petición: " + ex.Message);
+            }
+            finally
+            {
+                client.Close();
             }
         }
     }

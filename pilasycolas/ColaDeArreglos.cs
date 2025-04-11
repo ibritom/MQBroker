@@ -1,19 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace pilasycolas
 {
-    public class ColaDeArreglos : Cola
+    public class ColaDeArreglo : Cola<int>
     {
         private int[] cola;
         private int delante;
         private int destras;
         private int tamano;
 
-        public ColaDeArreglos(int tamano)
+        public void ColaDeArreglos(int tamano)
         {
             this.tamano = tamano;
             cola = new int[tamano];
@@ -60,7 +61,7 @@ namespace pilasycolas
             }
         }
 
-        public int Delante()
+        public int Frente()
         {
             if (delante == -1)
             {
@@ -71,6 +72,10 @@ namespace pilasycolas
             {
                 return cola[delante];
             }
+        }
+        public int Tamano()
+        {
+            return tamano;
         }
 
         public override string ToString()

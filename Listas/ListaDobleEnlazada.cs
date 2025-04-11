@@ -2,39 +2,42 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Listas
 {
-    public class ListaDobleEnlazada<Tipo> : Lista<Tipo>
+    public class ListaDobleEnlazada<Tipo> : Lista<Tipo>, IEnumerable<Tipo>
     {
         private Nodo<Tipo> cabeza;
         private int tamano;
+
         public ListaDobleEnlazada()
         {
             this.cabeza = null;
             this.tamano = 0;
         }
+
         public void Vaciar()
         {
             this.cabeza = null;
             this.tamano = 0;
         }
+
         public bool RevisarVacio()
         {
             return this.tamano == 0;
         }
+
         public int Tamano()
         {
             return this.tamano;
         }
+
         public bool Contiene(Tipo elemento)
         {
             Nodo<Tipo> actual = this.cabeza;
             while (actual != null)
             {
-                if (actual.valor == elemento)
+                if (EqualityComparer<Tipo>.Default.Equals(actual.valor, elemento))
                 {
                     return true;
                 }
@@ -42,6 +45,7 @@ namespace Listas
             }
             return false;
         }
+
         public bool Anadir(Tipo elemento)
         {
             Nodo<Tipo> nuevoNodo = new Nodo<Tipo>(elemento);
@@ -62,76 +66,77 @@ namespace Listas
             this.tamano++;
             return true;
         }
-        public int Borrar(Tipo elemento)
+
+        public Tipo Borrar(Tipo elemento)
         {
             if (this.cabeza == null)
             {
                 throw new KeyNotFoundException();
             }
-            if (this.cabeza.valor == elemento)
+
+            if (EqualityComparer<Tipo>.Default.Equals(this.cabeza.valor, elemento))
             {
+                Tipo valorBorrado = this.cabeza.valor;
                 this.cabeza = this.cabeza.siguiente;
                 if (this.cabeza != null)
                 {
                     this.cabeza.anterior = null;
                 }
                 this.tamano--;
-                return elemento;
+                return valorBorrado;
             }
+
             Nodo<Tipo> actual = this.cabeza;
             while (actual.siguiente != null)
             {
-                if (actual.siguiente.valor == elemento)
+                if (EqualityComparer<Tipo>.Default.Equals(actual.siguiente.valor, elemento))
                 {
+                    Tipo valorBorrado = actual.siguiente.valor;
                     actual.siguiente = actual.siguiente.siguiente;
                     if (actual.siguiente != null)
                     {
                         actual.siguiente.anterior = actual;
                     }
                     this.tamano--;
-                    return elemento;
+                    return valorBorrado;
                 }
                 actual = actual.siguiente;
             }
+
             throw new KeyNotFoundException();
         }
+        public IEnumerator<Tipo> GetEnumerator()
+        {
+            Nodo<Tipo> actual = cabeza;
+            while (actual != null)
+            {
+                yield return actual.valor;
+                actual = actual.siguiente;
+            }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+
         public override string ToString()
         {
             return ToString_aux();
         }
-        public string ToString_aux()
+
+        private string ToString_aux()
         {
             Nodo<Tipo> actual = this.cabeza;
-            try
-            {
-                while (actual != null)
-                {
-                    string stringLista = "";
-                    var rango = Enumerable.Range(0, this.Tamano());
-                    foreach (var i in rango)
-                    {
-                        if (stringLista != "")
-                        {
-                            stringLista = stringLista + ", " + actual.valor;
-                            actual = actual.siguiente;
-                        }
-                        else
-                        {
-                            stringLista = stringLista + actual.valor;
-                            actual = actual.siguiente;
-                        }
+            List<string> elementos = new List<string>();
 
-                    }
-                    return "[" + stringLista + "]";
-                }
-                return "";
-            }
-            catch
+            while (actual != null)
             {
-                return "Error mostrando el contenido de la lista";
-
+                elementos.Add(actual.valor?.ToString());
+                actual = actual.siguiente;
             }
 
+            return "[" + string.Join(", ", elementos) + "]";
         }
     }
 }

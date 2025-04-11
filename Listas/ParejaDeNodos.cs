@@ -1,20 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Listas
+﻿namespace Listas
 {
-    public class ParejaDeNodos<Tipo1, Tipo2>
+    public class ParejaDeNodos<TKey, TValue>
     {
-        public Nodo<Tipo1> Nombre { get; set; }
-        public  Nodo<Tipo2> Valor { get; set; }
+        public TKey Clave { get; set; }
+        public TValue Valor { get; set; }
 
-        public ParejaDeNodos(Nodo<Tipo1> nombre, Nodo<Tipo2> valor)
+        public ParejaDeNodos(TKey clave, TValue valor)
         {
-            this.Nombre = nombre;
-            this.Valor = valor;
+            Clave = clave;
+            Valor = valor;
+        }
+
+        public override string ToString()
+        {
+            return $"({Clave}, {Valor})";
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is ParejaDeNodos<TKey, TValue> otra)
+            {
+                return EqualityComparer<TKey>.Default.Equals(this.Clave, otra.Clave);
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Clave);
         }
     }
 }

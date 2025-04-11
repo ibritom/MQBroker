@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace pilasycolas
 {
-    internal class Nodo
+    internal class Nodo<Tipo>
     {
-        internal int valor { get; set; }
-        internal Nodo? siguiente { get; set; }
-        internal Nodo? anterior { get; set; }
+        internal Tipo valor { get; set; }
+        internal Nodo<Tipo> siguiente { get; set; }
+        internal Nodo<Tipo> anterior { get; set; }
 
-        public Nodo(int valor)
+        public Nodo(Tipo valor)
         {
             this.valor = valor;
             this.siguiente = null;

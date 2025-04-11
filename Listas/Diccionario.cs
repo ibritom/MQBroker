@@ -1,78 +1,61 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Listas
 {
-    internal class Diccionario<Tipo1, Tipo2>: Lista<ParejaDeNodos<Tipo1, Tipo2>>
+    public class Diccionario<TKey, TValue>
     {
-        private ParejaDeNodos<Tipo1, Tipo2> parejaDeValores { get; set; }
-
-        private int tamano;
+        private ListaDobleEnlazada<ParejaDeNodos<TKey, TValue>> elementos;
 
         public Diccionario()
         {
-            this.parejaDeValores = null;
-            this.tamano = 0;
+            elementos = new ListaDobleEnlazada<ParejaDeNodos<TKey, TValue>>();
         }
-        public void Anadir(ParejaDeNodos<Tipo1, Tipo2> parejaDeValores)
+
+        public void Anadir(TKey clave, TValue valor)
         {
-            if (this.parejaDeValores == null)
+            if (Contiene(clave))
             {
-                this.parejaDeValores = parejaDeValores;
-                this.tamano++;
-                return;
+                throw new ArgumentException("La clave ya existe en el diccionario.");
             }
-            Nodo<Tipo1> nuevoNombre = new Nodo<Tipo1>(parejaDeValores.Nombre);
-            Nodo<Tipo2> nuevoValor = new Nodo<Tipo2>(parejaDeValores.Valor);
-            nuevoNombre.siguiente = this.parejaDeValores;
-            this.parejaDeValores.anterior = nuevoNombre;
-            this.parejaDeValores = nuevoNombre;
-            this.tamano++;
+            elementos.Anadir(new ParejaDeNodos<TKey, TValue>(clave, valor));
         }
-        public Tipo2 Obtener(Tipo1 nombre)
+
+        public TValue Obtener(TKey clave)
         {
-            Nodo<Tipo1> actual = this.parejaDeValores;
+            Nodo<ParejaDeNodos<TKey, TValue>> actual = ObtenerCabeza();
             while (actual != null)
             {
-                if (actual.valor.Equals(nombre))
+                if (EqualityComparer<TKey>.Default.Equals(actual.valor.Clave, clave))
                 {
-                    return this.Valor.valor;
+                    return actual.valor.Valor;
                 }
                 actual = actual.siguiente;
             }
-            throw new KeyNotFoundException("El nombre no se encuentra en el diccionario.");
+            throw new KeyNotFoundException("La clave no se encuentra en el diccionario.");
         }
-        public void Borrar(Tipo1 nombre)
+
+        public void Borrar(TKey clave)
         {
-            Nodo<Tipo1> actual = this.parejaDeValores;
+            Nodo<ParejaDeNodos<TKey, TValue>> actual = ObtenerCabeza();
             while (actual != null)
             {
-                if (actual.valor.Equals(nombre))
+                if (EqualityComparer<TKey>.Default.Equals(actual.valor.Clave, clave))
                 {
-                    if (actual.anterior != null)
-                    {
-                        actual.anterior.siguiente = actual.siguiente;
-                    }
-                    if (actual.siguiente != null)
-                    {
-                        actual.siguiente.anterior = actual.anterior;
-                    }
-                    this.tamano--;
+                    elementos.Borrar(actual.valor);
                     return;
                 }
                 actual = actual.siguiente;
             }
-            throw new KeyNotFoundException("El nombre no se encuentra en el diccionario.");
+            throw new KeyNotFoundException("La clave no se encuentra en el diccionario.");
         }
-        public bool Contiene(Tipo1 nombre)
+
+        public bool Contiene(TKey clave)
         {
-            Nodo<Tipo1> actual = this.parejaDeValores;
+            Nodo<ParejaDeNodos<TKey, TValue>> actual = ObtenerCabeza();
             while (actual != null)
             {
-                if (actual.valor.Equals(nombre))
+                if (EqualityComparer<TKey>.Default.Equals(actual.valor.Clave, clave))
                 {
                     return true;
                 }
@@ -80,41 +63,33 @@ namespace Listas
             }
             return false;
         }
+
         public void Vaciar()
         {
-            this.parejaDeValores = null;
-            this.Valor = null;
-            this.tamano = 0;
+            elementos.Vaciar();
         }
+
         public bool RevisarVacio()
         {
-            return this.tamano == 0;
+            return elementos.RevisarVacio();
         }
+
         public int Tamano()
         {
-            return this.tamano;
+            return elementos.Tamano();
         }
-        public int Borrar(ParejaDeNodos<Tipo1, Tipo2> elemento)
+
+        public override string ToString()
         {
-            Nodo<Tipo1> actual = this.parejaDeValores;
-            while (actual != null)
-            {
-                if (actual.valor.Equals(elemento.Nombre))
-                {
-                    if (actual.anterior != null)
-                    {
-                        actual.anterior.siguiente = actual.siguiente;
-                    }
-                    if (actual.siguiente != null)
-                    {
-                        actual.siguiente.anterior = actual.anterior;
-                    }
-                    this.tamano--;
-                    return 1;
-                }
-                actual = actual.siguiente;
-            }
-            throw new KeyNotFoundException("El nombre no se encuentra en el diccionario.");
+            return elementos.ToString();
+        }
+
+        // Ayudante interno para acceder al nodo cabeza de la lista
+        private Nodo<ParejaDeNodos<TKey, TValue>> ObtenerCabeza()
+        {
+            var tipoLista = elementos.GetType();
+            var campoCabeza = tipoLista.GetField("cabeza", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            return campoCabeza.GetValue(elementos) as Nodo<ParejaDeNodos<TKey, TValue>>;
         }
     }
 }

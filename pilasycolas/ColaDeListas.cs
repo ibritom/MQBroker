@@ -1,25 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace pilasycolas
 {
-    public class ColaDeListas : Cola
+    public class ColaDeListas<Tipo> : Cola<Tipo>
     {
-        private Nodo delante;
-        private Nodo detras;
+        private Nodo<Tipo> delante;
+        private Nodo<Tipo> detras;
+        private int tamano;
 
         public ColaDeListas()
         {
             delante = null;
             detras = null;
+            tamano = 0;
         }
 
-        public void AnadirACola(int element)
+        public void AnadirACola(Tipo elemento)
         {
-            Nodo nuevoNodo = new Nodo(element);
+            Nodo<Tipo> nuevoNodo = new Nodo<Tipo>(elemento);
             if (detras == null)
             {
                 delante = nuevoNodo;
@@ -30,44 +29,46 @@ namespace pilasycolas
                 detras.siguiente = nuevoNodo;
                 detras = nuevoNodo;
             }
+            tamano++;
         }
 
-        public int QuitarDeCola()
+        public Tipo QuitarDeCola()
         {
             if (delante == null)
             {
-                Console.WriteLine("Cola desfasada");
-                return -1;
+                throw new InvalidOperationException("Cola vacía");
             }
             else
             {
-                int element = delante.valor;
+                Tipo elemento = delante.valor;
                 delante = delante.siguiente;
                 if (delante == null)
                 {
                     detras = null;
                 }
-                return element;
+                tamano--;
+                return elemento;
             }
         }
 
-        public int Delante()
+        public Tipo Frente()
         {
             if (delante == null)
             {
-                Console.WriteLine("Cola desfasada");
-                return -1;
+                throw new InvalidOperationException("Cola vacía");
             }
-            else
-            {
-                return delante.valor;
-            }
+            return delante.valor;
+        }
+
+        public int Tamano()
+        {
+            return tamano;
         }
 
         public override string ToString()
         {
             StringBuilder resultado = new StringBuilder("[");
-            Nodo actual = delante;
+            Nodo<Tipo> actual = delante;
 
             while (actual != null)
             {
@@ -83,5 +84,4 @@ namespace pilasycolas
             return resultado.ToString();
         }
     }
-
 }

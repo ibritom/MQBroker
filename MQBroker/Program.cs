@@ -4,7 +4,8 @@
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello, World!");
+            MQBroker broker = new MQBroker("127.0.0.1", 5000);
+            broker.Iniciar();
         }
     }
 }
