@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace Listas
 {
-    class Nodo<Tipo>
+    public class Nodo<Tipo>
     {
         public Tipo valor { get; set; }
         public Nodo<Tipo> siguiente { get; set; }
 
         public Nodo<Tipo> anterior { get; set; }
-        public Nodo(int valor)
+        public Nodo(Tipo valor)
         {
             this.valor = valor;
             this.siguiente = null;

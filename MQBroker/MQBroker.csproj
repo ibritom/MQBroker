@@ -8,7 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Listas\Listas.csproj" />
     <ProjectReference Include="..\MQBrokerClient\MQBrokerClient.csproj" />
+    <ProjectReference Include="..\pilasycolas\pilasycolas.csproj" />
   </ItemGroup>
 
 </Project>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Listas
 {
-    public class ListaDobleEnlazada<Tipo> : Lista
+    public class ListaDobleEnlazada<Tipo> : Lista<Tipo>
     {
         private Nodo<Tipo> cabeza;
         private int tamano;
